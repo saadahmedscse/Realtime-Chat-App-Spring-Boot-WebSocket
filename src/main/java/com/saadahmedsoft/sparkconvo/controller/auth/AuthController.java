@@ -15,7 +15,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/create-account")
-    public ResponseEntity<?> createAccount(@RequestPart("photo") MultipartFile photo, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<?> createAccount(@RequestPart("photo") MultipartFile photo, @ModelAttribute("userRequest") UserRequest userRequest) {
         return authService.createAccount(photo, userRequest);
     }
 }
