@@ -1,4 +1,4 @@
-package com.saadahmedsoft.sparkconvo.util.auth;
+package com.saadahmedsoft.sparkconvo.util.common;
 
 import java.util.Random;
 
