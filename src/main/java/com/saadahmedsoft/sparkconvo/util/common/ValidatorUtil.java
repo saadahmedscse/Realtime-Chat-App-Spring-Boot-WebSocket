@@ -35,7 +35,7 @@ public class ValidatorUtil {
     public ResponseEntity<?> isLoginRequestValid(LoginRequest loginRequest) {
         if (loginRequest.getEmail() == null || loginRequest.getEmail().isBlank()) return generateCommonBadRequestResponse("Email is required");
         if (!loginRequest.getEmail().matches(EMAIL_PATTERN)) return generateCommonBadRequestResponse("Invalid email address");
-        if (userRepository.findByEmail(loginRequest.getEmail()).isEmpty()) return generateCommonBadRequestResponse("Email not found");
+        if (userRepository.findByEmail(loginRequest.getEmail()).isEmpty()) return generateCommonBadRequestResponse("Email does not exist");
         if (loginRequest.getPassword() == null || loginRequest.getPassword().isBlank()) return generateCommonBadRequestResponse("Password is required");
 
         return new ResponseEntity<>(HttpStatus.OK);
