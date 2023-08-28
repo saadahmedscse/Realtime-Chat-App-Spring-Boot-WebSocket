@@ -35,8 +35,8 @@ public class AuthServiceImpl implements AuthService {
         if (validationResult.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return validationResult;
 
         try {
-            String storagePath = "C:/Temp/Uploads/" + RandomStringUtil.getRandomString(16) + " " + photo.getOriginalFilename();
-            Files.copy(photo.getInputStream(), Paths.get(storagePath), StandardCopyOption.COPY_ATTRIBUTES);
+            String storagePath = "C:/Temp/Uploads/" + RandomStringUtil.getRandomString(16) + "-" + photo.getOriginalFilename();
+            Files.copy(photo.getInputStream(), Paths.get(storagePath), StandardCopyOption.REPLACE_EXISTING);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
             String creationTime = simpleDateFormat.format(new Date());
