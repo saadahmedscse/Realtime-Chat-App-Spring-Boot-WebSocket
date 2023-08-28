@@ -62,7 +62,9 @@ public class AuthServiceImpl implements AuthService {
         if (validationResult.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return validationResult;
 
         try {
-            String storagePath = "C:/Temp/Uploads/" + RandomStringUtil.getRandomString(16) + "-" + photo.getOriginalFilename();
+            String rootPath = "C:/xampp/htdocs/";
+            String photoUrl = "api/uploads/" + RandomStringUtil.getRandomString(16) + "-" + photo.getOriginalFilename();
+            String storagePath = rootPath + photoUrl;
             Files.copy(photo.getInputStream(), Paths.get(storagePath), StandardCopyOption.REPLACE_EXISTING);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
@@ -72,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
                     .name(createAccountRequest.getName())
                     .email(createAccountRequest.getEmail())
                     .gender(createAccountRequest.getGender())
-                    .photo(storagePath)
+                    .photo(photoUrl)
                     .password(passwordEncoder.encode(createAccountRequest.getPassword()))
                     .createdAt(creationTime)
                     .updatedAt(creationTime).build();
