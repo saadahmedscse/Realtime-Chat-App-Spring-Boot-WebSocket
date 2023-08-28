@@ -1,16 +1,13 @@
-package com.saadahmedsoft.sparkconvo.util.auth;
+package com.saadahmedsoft.sparkconvo.util.common;
 
 import com.saadahmedsoft.sparkconvo.dto.common.ApiResponse;
 import com.saadahmedsoft.sparkconvo.dto.user.UserRequest;
-import com.saadahmedsoft.sparkconvo.entity.user.User;
 import com.saadahmedsoft.sparkconvo.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @Component
 public class ValidatorUtil {
