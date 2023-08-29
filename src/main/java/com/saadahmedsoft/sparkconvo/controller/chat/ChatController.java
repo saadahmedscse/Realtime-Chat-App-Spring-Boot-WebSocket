@@ -26,7 +26,7 @@ public class ChatController {
         return chatService.getMyConversations(request);
     }
 
-    @GetMapping("/single")
+    @PostMapping("/single")
     public ResponseEntity<?> getSingleConversation(@RequestBody SingleConversationRequest singleConversationRequest) {
         return chatService.getSingleConversation(singleConversationRequest);
     }
