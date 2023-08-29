@@ -30,5 +30,6 @@ public class Conversation {
     @Column(name = "updated_at")
     private String updatedAt;
     @OneToMany
+    @OrderBy("id DESC")
     private List<Chat> chats;
 }
