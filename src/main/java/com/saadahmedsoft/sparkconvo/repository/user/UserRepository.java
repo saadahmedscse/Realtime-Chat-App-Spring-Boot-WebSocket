@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT NEW com.saadahmedsoft.sparkconvo.dto.user.UserProfileResponse(user.id, user.name, user.email, user.photo, user.gender, user.createdAt, user.updatedAt) FROM User user WHERE user.email = :email")
     UserProfileResponse getProfile(@Param("email") String email);
+
+    @Query("SELECT NEW com.saadahmedsoft.sparkconvo.dto.user.UserProfileResponse(user.id, user.name, user.email, user.photo, user.gender, user.createdAt, user.updatedAt) FROM User user WHERE user.id = :id")
+    Optional<UserProfileResponse> getOtherProfile(@Param("id") long id);
 }

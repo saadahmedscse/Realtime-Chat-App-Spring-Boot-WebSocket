@@ -10,4 +10,6 @@ public interface UserService {
     ResponseEntity<?> getAllUsersExceptMyself(HttpServletRequest request);
 
     ResponseEntity<?> getProfile(HttpServletRequest request);
+
+    ResponseEntity<?> getOtherProfile(long id);
 }
