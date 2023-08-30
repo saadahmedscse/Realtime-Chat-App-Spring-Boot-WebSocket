@@ -22,7 +22,7 @@ public class ChatController {
 
     @GetMapping
     public ResponseEntity<?> getMyConversations(HttpServletRequest request) {
-        return chatService.getMyConversations(request);
+        return chatService.getConversationWithoutChatList(request);
     }
 
     @PostMapping("/single")
