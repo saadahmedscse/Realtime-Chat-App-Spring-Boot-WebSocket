@@ -2,10 +2,13 @@ package com.saadahmedsoft.sparkconvo.service.chat;
 
 import com.saadahmedsoft.sparkconvo.dto.chat.ChatRequest;
 import com.saadahmedsoft.sparkconvo.dto.chat.ConversationRequest;
+import com.saadahmedsoft.sparkconvo.dto.chat.ConversationResponse;
 import com.saadahmedsoft.sparkconvo.dto.chat.SingleConversationRequest;
 import com.saadahmedsoft.sparkconvo.dto.common.ApiResponse;
+import com.saadahmedsoft.sparkconvo.dto.user.UserProfileResponse;
 import com.saadahmedsoft.sparkconvo.entity.chat.Chat;
 import com.saadahmedsoft.sparkconvo.entity.chat.Conversation;
+import com.saadahmedsoft.sparkconvo.entity.user.User;
 import com.saadahmedsoft.sparkconvo.repository.chat.ChatRepository;
 import com.saadahmedsoft.sparkconvo.repository.chat.ConversationRepository;
 import com.saadahmedsoft.sparkconvo.repository.user.UserRepository;
@@ -17,10 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -39,7 +39,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ResponseEntity<?> createConversation(ConversationRequest conversationRequest) {
-        if (conversationRepository.getSinleConversation(conversationRequest.getP1Email(), conversationRequest.getP2Email()).isEmpty()) {
+        if (conversationRepository.getSingleConversation(conversationRequest.getP1Email(), conversationRequest.getP2Email()).isEmpty()) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
             String creationTime = simpleDateFormat.format(new Date());
 
@@ -64,15 +64,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ResponseEntity<?> getMyConversations(HttpServletRequest request) {
-        String email = getUsernameFromRequest(request);
-
-        return new ResponseEntity<>(conversationRepository.getMyConversations(email), HttpStatus.OK);
-    }
-
-    @Override
     public ResponseEntity<?> getSingleConversation(SingleConversationRequest singleConversationRequest) {
-        Optional<Conversation> optionalConversation = conversationRepository.getSinleConversation(singleConversationRequest.getP1Email(), singleConversationRequest.getP2Email());
+        Optional<Conversation> optionalConversation = conversationRepository.getSingleConversation(singleConversationRequest.getP1Email(), singleConversationRequest.getP2Email());
         if (optionalConversation.isPresent()) return new ResponseEntity<>(optionalConversation.get(), HttpStatus.OK);
 
         return new ResponseEntity<>(new ApiResponse(false, "No conversation found"), HttpStatus.BAD_REQUEST);
@@ -97,6 +90,47 @@ public class ChatServiceImpl implements ChatService {
             chatList.add(chat);
             conversationRepository.save(conversation);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getConversationWithoutChatList(HttpServletRequest request) {
+        String email = getUsernameFromRequest(request);
+        List<Conversation> conversations = conversationRepository.getConversationsWithoutChat(email);
+        List<ConversationResponse> conversationResponses = new ArrayList<>();
+        User user;
+
+        for (Conversation c : conversations) {
+            if (c.getP1Email().equals(email)) {
+                user = userRepository.findFirstByEmail(c.getP2Email());
+            } else {
+                user = userRepository.findFirstByEmail(c.getP1Email());
+            }
+
+            String lastMessage = null;
+            if (!c.getChats().isEmpty()) lastMessage = c.getChats().get(0).getMessage();
+
+            conversationResponses.add(
+                    ConversationResponse.builder()
+                            .id(c.getId())
+                            .lastMessage(lastMessage)
+                            .friend(
+                                    UserProfileResponse.builder()
+                                            .id(user.getId())
+                                            .name(user.getName())
+                                            .photo(user.getPhoto())
+                                            .email(user.getEmail())
+                                            .gender(user.getGender())
+                                            .createdAt(user.getCreatedAt())
+                                            .updatedAt(user.getUpdatedAt())
+                                            .build()
+                            )
+                            .createdAt(c.getCreatedAt())
+                            .updatedAt(c.getUpdatedAt())
+                            .build()
+            );
+        }
+
+        return new ResponseEntity<>(conversationResponses, HttpStatus.OK);
     }
 
     private String getUsernameFromRequest(HttpServletRequest request) {
