@@ -12,9 +12,9 @@ public interface ChatService {
 
     ResponseEntity<?> createConversation(ConversationRequest conversationRequest);
 
-    ResponseEntity<?> getMyConversations(HttpServletRequest request);
-
     ResponseEntity<?> getSingleConversation(SingleConversationRequest singleConversationRequest);
 
     void createChat(ChatRequest chatRequest);
+
+    ResponseEntity<?> getConversationWithoutChatList(HttpServletRequest request);
 }
