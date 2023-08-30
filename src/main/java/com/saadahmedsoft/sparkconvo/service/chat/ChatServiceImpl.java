@@ -79,32 +79,24 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ResponseEntity<?> createChat(HttpServletRequest request, ChatRequest chatRequest) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-        String creationTime = simpleDateFormat.format(new Date());
+    public void createChat(ChatRequest chatRequest) {
+        Optional<Conversation> optionalConversation = conversationRepository.findById(chatRequest.getConversationId());
+        if (optionalConversation.isPresent()) {
+            Conversation conversation = optionalConversation.get();
+            List<Chat> chatList = conversation.getChats();
 
-        String email = getUsernameFromRequest(request);
-        long userId = userRepository.findFirstByEmail(email).getId();
+            Chat chat = Chat.builder()
+                    .message(chatRequest.getMessage())
+                    .receiverId(chatRequest.getReceiverId())
+                    .senderId(chatRequest.getSenderId())
+                    .createdAt(chatRequest.getCreatedAt())
+                    .updatedAt(chatRequest.getUpdatedAt())
+                    .build();
 
-        Conversation conversation = conversationRepository.findById(chatRequest.getConversationId()).get();
-        List<Chat> chatList = conversation.getChats();
-
-        String receiverEmail = conversation.getP1Email().equals(email) ? conversation.getP2Email() : conversation.getP1Email();
-        long receiverId = userRepository.findFirstByEmail(receiverEmail).getId();
-
-        Chat chat = Chat.builder()
-                .message(chatRequest.getMessage())
-                .receiverId(receiverId)
-                .senderId(userId)
-                .createdAt(creationTime)
-                .updatedAt(creationTime)
-                .build();
-
-        chatRepository.save(chat);
-        chatList.add(chat);
-        conversationRepository.save(conversation);
-
-        return new ResponseEntity<>(new ApiResponse(true, "Chat added successfully"), HttpStatus.OK);
+            chatRepository.save(chat);
+            chatList.add(chat);
+            conversationRepository.save(conversation);
+        }
     }
 
     private String getUsernameFromRequest(HttpServletRequest request) {
