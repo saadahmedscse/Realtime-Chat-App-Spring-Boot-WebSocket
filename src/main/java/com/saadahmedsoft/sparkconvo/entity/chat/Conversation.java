@@ -29,7 +29,7 @@ public class Conversation {
     private String createdAt;
     @Column(name = "updated_at")
     private String updatedAt;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @OrderBy("id DESC")
     private List<Chat> chats;
 }
