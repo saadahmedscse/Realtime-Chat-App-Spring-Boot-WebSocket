@@ -32,6 +32,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/create-account").permitAll()
+                                .requestMatchers(("/send-realtime-message")).permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
