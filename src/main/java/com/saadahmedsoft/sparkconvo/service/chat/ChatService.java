@@ -16,5 +16,5 @@ public interface ChatService {
 
     ResponseEntity<?> getSingleConversation(SingleConversationRequest singleConversationRequest);
 
-    ResponseEntity<?> createChat(HttpServletRequest request, ChatRequest chatRequest);
+    void createChat(ChatRequest chatRequest);
 }
