@@ -12,9 +12,9 @@ import java.util.Optional;
 @Repository
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
-    @Query("SELECT c FROM Conversation c WHERE c.p1Email LIKE :email OR c.p2Email LIKE :email")
-    List<Conversation> getMyConversations(@Param("email") String email);
-
     @Query("SELECT c FROM  Conversation  c WHERE c.p1Email like :p1Email AND c.p2Email LIKE :p2Email OR c.p1Email LIKE :p2Email AND c.p2Email LIKE :p1Email")
-    Optional<Conversation> getSinleConversation(@Param("p1Email") String p1Email, @Param("p2Email") String p2Email);
+    Optional<Conversation> getSingleConversation(@Param("p1Email") String p1Email, @Param("p2Email") String p2Email);
+
+    @Query("SELECT c FROM Conversation c WHERE c.p1Email LIKE :email OR c.p2Email LIKE :email")
+    List<Conversation> getConversationsWithoutChat(@Param("email") String email);
 }
