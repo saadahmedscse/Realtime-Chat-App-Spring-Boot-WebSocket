@@ -1,5 +1,7 @@
 package com.saadahmedsoft.sparkconvo.config;
 
+import com.saadahmedsoft.sparkconvo.service.chat.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -9,8 +11,11 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
+    @Autowired
+    private ChatService chatService;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new WebSocketHandler(), "/websocket");
+        registry.addHandler(new WebSocketHandler(chatService), "/send-realtime-message");
     }
 }
