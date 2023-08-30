@@ -1,6 +1,5 @@
 package com.saadahmedsoft.sparkconvo.controller.chat;
 
-import com.saadahmedsoft.sparkconvo.dto.chat.ChatRequest;
 import com.saadahmedsoft.sparkconvo.dto.chat.ConversationRequest;
 import com.saadahmedsoft.sparkconvo.dto.chat.SingleConversationRequest;
 import com.saadahmedsoft.sparkconvo.service.chat.ChatService;
@@ -29,10 +28,5 @@ public class ChatController {
     @PostMapping("/single")
     public ResponseEntity<?> getSingleConversation(@RequestBody SingleConversationRequest singleConversationRequest) {
         return chatService.getSingleConversation(singleConversationRequest);
-    }
-
-    @PostMapping("/chat")
-    public ResponseEntity<?> createChat(HttpServletRequest request, @RequestBody ChatRequest chatRequest) {
-        return chatService.createChat(request, chatRequest);
     }
 }
