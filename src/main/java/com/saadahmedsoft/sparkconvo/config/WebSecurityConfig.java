@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +31,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/create-account").permitAll()
-                                .requestMatchers(("/send-realtime-message")).permitAll()
+                                .requestMatchers("/send-realtime-message").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
