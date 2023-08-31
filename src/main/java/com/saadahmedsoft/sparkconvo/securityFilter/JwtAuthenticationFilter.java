@@ -68,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                         }
                                         """,
                     false,
-                    "Url not foun");
+                    "Invalid URL, no endpoint found.");
             return;
         }
 
