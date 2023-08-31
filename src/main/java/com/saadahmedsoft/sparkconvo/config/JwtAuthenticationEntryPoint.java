@@ -19,12 +19,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
         response.getWriter().format("""
-      {
-         "status": %d,
-         "message": "%s"
-      }
-      """,
-                HttpStatus.UNAUTHORIZED.value(),
+                                    {
+                                       "status": %b,
+                                       "message": "%s"
+                                    }
+                                    """,
+                false,
                 authException.getLocalizedMessage());
     }
 }
