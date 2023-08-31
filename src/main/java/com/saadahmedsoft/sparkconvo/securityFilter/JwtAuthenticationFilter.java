@@ -68,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                         }
                                         """,
                     false,
-                    "Url not found");
+                    "Url not foun");
             return;
         }
 
